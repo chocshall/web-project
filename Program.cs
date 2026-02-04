@@ -10,8 +10,8 @@ namespace web_project
         public static void Main(string[] args)
         {
 
-            var configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).
-               AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
+            //var configuration = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).
+            //   AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
 
             using (var context = new SchoolContext())
             {
@@ -52,7 +52,8 @@ namespace web_project
 
                     // easier way with accesing the grade not using lists checking with contain if the items 
                     // is there or not
-                    var elemByName = context.Students.Where(item => item.Grade.GradeName.StartsWith("2"));
+                    var number = 2;
+                    var elemByName = context.Students.Where(item => item.Grade.GradeName.StartsWith(Convert.ToString(number)));
 
                     foreach (var item in elemByName)
                     {
