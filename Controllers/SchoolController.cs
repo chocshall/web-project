@@ -30,10 +30,10 @@ namespace web_project.Controllers
         }
         
         // GET api/<SchoolController>/5
-        [HttpGet("{id}")]
-        public IEnumerable<Student> Get(int id)
+        [HttpGet("{grade}")]
+        public IEnumerable<Student> Get(int grade)
         {
-            var elemByName = _context.Students.Where(item => item.Grade.GradeName.StartsWith(Convert.ToString(id)));
+            var elemByName = _context.Students.Where(item => item.Grade.GradeName.StartsWith(Convert.ToString(grade)));
             return elemByName;
         }
 
@@ -56,7 +56,7 @@ namespace web_project.Controllers
         }
 
         // DELETE api/<SchoolController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{Id}")]
         public void Delete(int id)
         {
             var elemById = _context.Students.Where(item => item.GradeId == id);
