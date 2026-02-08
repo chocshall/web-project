@@ -19,6 +19,7 @@ namespace web_project
         // makes the classes entities so framework could work
         public DbSet<Student> Students { get; set; }
         public DbSet<Grade> Grades { get; set; }
+        
 
         // now the database name and database server info gets configured by the needs by overriding OnConfiguring method
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
