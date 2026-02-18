@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using web_project.Models;
 using web_project.ResponseModels;
@@ -22,12 +21,10 @@ namespace web_project.Controllers
 
 
         // GET: api/<SchoolController>
-        [HttpGet]
+        [HttpGet("Students")]
         public IEnumerable<StudentDTO> Get()
         {
 
-
-            // then can access the 
             //so it wont become null include makes  this work because it tells to check more data in this example with grade
             var students = _context.Students.Include(Students => Students.Grade).ToList();
             // .
@@ -45,21 +42,73 @@ namespace web_project.Controllers
         }
         
         // GET api/<SchoolController>/5
-        [HttpGet("Students")]
-        public IEnumerable<Student> Get(string gradeSearchString)
+        [HttpGet("StudentsByGrade")]
+        public IEnumerable<StudentDTO> Get(string gradeSearchString)
         {
-            var elemByName = _context.Students.Where(item => item.Grade.GradeName.StartsWith(gradeSearchString));
-            return elemByName;
+            var studentsByGrade = _context.Students.Include(Students => Students.Grade).Where(item => item.Grade.GradeName.StartsWith(gradeSearchString)).ToList();
+
+            List<StudentDTO> studentsListByGrade = new List<StudentDTO>();
+            foreach (var item in studentsByGrade)
+            {
+                StudentDTO studentDTO = new StudentDTO();
+                studentDTO.FirstName = item.FirstName;
+                studentDTO.LastName = item.LastName;
+                studentDTO.GradeName = item.Grade.GradeName;
+                studentsListByGrade.Add(studentDTO);
+            }
+            return studentsListByGrade;
+
+            
         }
 
         // POST api/<SchoolController>
-        [HttpPost]
+        [HttpPost("AddStudent")]
         public void Post([FromBody] DataOfStudent serverSideStudentData)
         {
-            var grdNew = new Grade() { GradeName = $"{serverSideStudentData.GradeName}st Grade" };
-            var stdNew = new Student() { FirstName = serverSideStudentData.FirstName, LastName = serverSideStudentData.LastName, Grade = grdNew };
-            _context.Students.Add(stdNew);
-            _context.SaveChanges();
+            // check if such grade already exists
+            var checkGotDataExists = _context.Grades.Where(item => item.GradeName.StartsWith($"{serverSideStudentData.GradeName}")).ToList();
+           
+          
+            if (checkGotDataExists.Count() < 1)
+            {
+                // if no create new one 
+                var grdNew = new Grade() { GradeName = $"{serverSideStudentData.GradeName} Grade" };
+                var newlyMadeGradeList = _context.Grades.Where(item => item.GradeName.StartsWith($"{serverSideStudentData.GradeName}")).ToList();
+                // then check if was created correct
+                if (newlyMadeGradeList.Count() >= 1)
+                {
+                    // if yes add student data and save
+                    var stdNew = new Student() { FirstName = serverSideStudentData.FirstName, LastName = serverSideStudentData.LastName, Grade = grdNew };
+                    _context.Students.Add(stdNew);
+                   
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("Error no gradeName found, could not be created");
+                }
+            }
+
+            else
+            {
+                // if already exists
+                if (checkGotDataExists.Count() >= 1)
+                {
+                    // use the existing grade data of its name, but because id is unique
+                    // the id of grade gets created automatically by specificat
+                    var stdNew = new Student() { FirstName = serverSideStudentData.FirstName, LastName = serverSideStudentData.LastName, Grade = new Grade() { GradeName = checkGotDataExists[0].GradeName } };
+                    _context.Students.Add(stdNew);
+                    
+                    _context.SaveChanges();
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Error no gradeName found, could not be created");
+                }
+            }
+            
+            
             return;
         }
 
@@ -71,7 +120,7 @@ namespace web_project.Controllers
         }
 
         // DELETE api/<SchoolController>/5
-        [HttpDelete("Student/{id}")]
+        [HttpDelete("Delete/Student/by/{id}")]
         public void Delete(int id)
         {
             var student = _context.Students.Single(item => item.StudentId == id);

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-
+﻿
 namespace web_project.Models
 {
     public class Student
