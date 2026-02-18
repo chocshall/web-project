@@ -125,7 +125,7 @@ namespace web_project.Controllers
         {
             var student = _context.Students.Single(item => item.StudentId == id);
             
-           _context.Students.Remove(student);
+           _context.Students.Remove(student); 
            
             _context.SaveChanges();
         }
