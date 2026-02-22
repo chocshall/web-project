@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using web_project.Models;
 using web_project.ResponseModels;
@@ -21,6 +22,7 @@ namespace web_project.Controllers
 
 
         // GET: api/<SchoolController>
+        [Authorize]
         [HttpGet("Students")]
         public IEnumerable<StudentDTO> Get()
         {
@@ -40,8 +42,9 @@ namespace web_project.Controllers
             return studentsList;
             //return new string[] { "value1", "value2" };
         }
-        
+
         // GET api/<SchoolController>/5
+        [Authorize]
         [HttpGet("StudentsByGrade")]
         public IEnumerable<StudentDTO> Get(string gradeSearchString)
         {
@@ -62,6 +65,7 @@ namespace web_project.Controllers
         }
 
         // POST api/<SchoolController>
+        [Authorize]
         [HttpPost("AddStudent")]
         public void Post([FromBody] DataOfStudent serverSideStudentData)
         {
@@ -71,13 +75,13 @@ namespace web_project.Controllers
           
             if (checkGotDataExists.Count() < 1)
             {
-                // if no create new one 
+                // if not created, create a new one.
                 var grdNew = new Grade() { GradeName = $"{serverSideStudentData.GradeName} Grade" };
                 var newlyMadeGradeList = _context.Grades.Where(item => item.GradeName.StartsWith($"{serverSideStudentData.GradeName}")).ToList();
-                // then check if was created correct
+                // then checks if it  was created.
                 if (newlyMadeGradeList.Count() >= 1)
                 {
-                    // if yes add student data and save
+                    // if true add student data and save
                     var stdNew = new Student() { FirstName = serverSideStudentData.FirstName, LastName = serverSideStudentData.LastName, Grade = grdNew };
                     _context.Students.Add(stdNew);
                    
@@ -107,8 +111,6 @@ namespace web_project.Controllers
                     Console.WriteLine("Error no gradeName found, could not be created");
                 }
             }
-            
-            
             return;
         }
 
@@ -120,6 +122,7 @@ namespace web_project.Controllers
         }
 
         // DELETE api/<SchoolController>/5
+        [Authorize]
         [HttpDelete("Delete/Student/by/{id}")]
         public void Delete(int id)
         {
