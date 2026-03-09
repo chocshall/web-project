@@ -1,0 +1,36 @@
+﻿/* #root with hashtag targets the html element with name id="root" */
+#root {
+    max-width: 1200px;
+    /*margin 0 auto centers the container horizontally*/
+    margin: 0 auto;
+}
+
+/*looking for a class with name container*/
+.container {
+    /* display: flex easier way to handle css elements*/
+    display: flex;
+    /*wraps items to next line if they dont fit in screen*/
+    flex-wrap: wrap;
+}
+
+.uiHolder {
+    /*margin is the space outside the item created 1rem is 1* root font size */
+    margin: 1rem;
+    /*border of the area of the element, then its one px thick, solid line no dots, color grey*/
+    border: 1px solid gray;
+}
+
+/*if statement that say if the screen is 600px or wider apply these changes*/
+@media screen and (min-width: 600px) {
+    .uiHolder {
+        /*it basically takes one share? of space if if there is extra or removes one share of space if not enough*/
+        /*and calc(50% - 2rem) is just basc calc for the best starting size*/
+        flex: 1 1 calc(50% - 2rem);
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .uiHolder {
+        flex: 1 1 calc(33% - 2rem);
+    }
+}

@@ -22,7 +22,7 @@ namespace web_project.Controllers
 
 
         // GET: api/<SchoolController>
-        [Authorize]
+        
         [HttpGet("Students")]
         public IEnumerable<StudentDTO> Get()
         {
@@ -45,7 +45,7 @@ namespace web_project.Controllers
 
         // GET api/<SchoolController>/5
         [Authorize]
-        [HttpGet("StudentsByGrade")]
+        [HttpGet("Students/ByGrade")]
         public IEnumerable<StudentDTO> Get(string gradeSearchString)
         {
             var studentsByGrade = _context.Students.Include(Students => Students.Grade).Where(item => item.Grade.GradeName.StartsWith(gradeSearchString)).ToList();
@@ -66,10 +66,11 @@ namespace web_project.Controllers
 
         // POST api/<SchoolController>
         [Authorize]
-        [HttpPost("AddStudent")]
+        [HttpPost("Student/Add")]
         public void Post([FromBody] DataOfStudent serverSideStudentData)
         {
             // check if such grade already exists
+            // fix so it checks for if data gotten is 1 check for 12 not correct
             var checkGotDataExists = _context.Grades.Where(item => item.GradeName.StartsWith($"{serverSideStudentData.GradeName}")).ToList();
            
           
@@ -115,7 +116,7 @@ namespace web_project.Controllers
         }
 
         // PUT api/<SchoolController>/5
-        [HttpPut("{id}")]
+        [HttpPut("Student/{id}/Update")]
         public void Put(int id, [FromBody] string value)
         {
             
@@ -123,7 +124,7 @@ namespace web_project.Controllers
 
         // DELETE api/<SchoolController>/5
         [Authorize]
-        [HttpDelete("Delete/Student/by/{id}")]
+        [HttpDelete("Student/{id}")]
         public void Delete(int id)
         {
             var student = _context.Students.Single(item => item.StudentId == id);

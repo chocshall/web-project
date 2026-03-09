@@ -46,6 +46,7 @@ namespace web_project
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
                     Name = "Authorization",
                     // where to put the token
+                    
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
                     Scheme = "bearer",
@@ -136,7 +137,7 @@ namespace web_project
             // adds login features register, login , refresh
             app.MapIdentityApi<IdentityUser>();
 
-           
+            app.UseStaticFiles();
 
             app.MapControllers();
 

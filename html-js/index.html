@@ -1,0 +1,29 @@
+<!-- doctype html makes the browser know what version of html document is written in-->
+<!DOCTYPE html>
+<!-- html lang is for language of the document-->
+<html lang="en">
+<!-- ind head goes everything that browser need but user doesnt see-->
+<head>
+    <!-- meta charset specifies what character set to use to so there wouldnt be weird symbols happening-->
+    <meta charset="utf-8" />
+    <!-- these specifications make it so on devices like phones, tables the zoom in is done by the devices -->
+    <!-- initial scale is 100 % not really zoomed in or zoomed out-->
+    <meta name="viewport" content="width=device-width, inital-scale=1.0" />
+    <!-- name of your webpage-->
+    <title>Ghibli App</title>
+
+    <!-- link href takes from a palce with extra parameters= diffrent font so and, rel say that the file that you are linking to is a set of styling rules-->
+    <!-- basically how to style-->
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
+    <!-- connect html file to css file-->
+    <link href="style.css" rel="stylesheet" />
+</head>
+
+<!-- body is what user sees-->
+    <body>
+        <!-- create empty container has the name id so javascript can acces it or find it-->
+        <div id="root"></div>
+        <!-- loads and runs the javascript file-->
+        <script src="scripts.js"></script>
+    </body>
+</html>
